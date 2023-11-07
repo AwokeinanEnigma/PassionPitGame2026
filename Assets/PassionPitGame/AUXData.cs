@@ -5,7 +5,7 @@ namespace PassionPitGame {
 		public SerializableEntityStateType StateType;
 		public string Name;
 		public string Description;
-		public Sprite Sprite;
+		public GameObject CardPrefab;
 		public int Cost;
 		public bool IsImportant;
 	}

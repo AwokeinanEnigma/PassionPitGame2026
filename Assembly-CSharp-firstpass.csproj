@@ -44,17 +44,20 @@
      <Compile Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Examples\Scipts\ViewStateReadme.cs" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Documentation\Content" />
      <None Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Shaders\SceneViewHighlight.shader" />
+     <Folder Include="Assets\Plugins\Demigiant" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Libraries" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Icons" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Examples\Scipts" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Documentation" />
      <None Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Textures\Getting Started\_Content.json" />
+     <Folder Include="Assets\Plugins\Demigiant\DOTween" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Shaders" />
      <None Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Stylesheets\FlatSelector.uss" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer" />
      <Folder Include="Assets\Plugins" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Examples" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer Settings" />
+     <None Include="Assets\Plugins\Demigiant\DOTween\readme.txt" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Stylesheets" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Textures\Other" />
      <Folder Include="Assets\Plugins\Infinity Code\Ultimate Editor Enhancer\Textures" />
@@ -352,6 +355,9 @@
      </Reference>
      <Reference Include="Pathfinding.Poly2Tri">
      <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Enigmaware\AstarPathfindingProject\Plugins\Poly2Tri\Pathfinding.Poly2Tri.dll</HintPath>
+     </Reference>
+     <Reference Include="DOTween">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
      </Reference>
      <Reference Include="netstandard">
      <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.13f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>
@@ -901,10 +907,6 @@
      </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="UltimateEditorEnhancer.csproj">
-      <Project>{78a93534-df9d-d5b0-5efc-8d8372df7d9e}</Project>
-      <Name>UltimateEditorEnhancer</Name>
-    </ProjectReference>
     <ProjectReference Include="PackageToolsEditor.csproj">
       <Project>{a1174e66-6a51-526f-db7e-6726a22270d3}</Project>
       <Name>PackageToolsEditor</Name>
@@ -917,9 +919,17 @@
       <Project>{f3708d95-0e5b-133a-8e4b-c6ee98e40813}</Project>
       <Name>AstarPathfindingProject</Name>
     </ProjectReference>
+    <ProjectReference Include="UltimateEditorEnhancer.csproj">
+      <Project>{78a93534-df9d-d5b0-5efc-8d8372df7d9e}</Project>
+      <Name>UltimateEditorEnhancer</Name>
+    </ProjectReference>
     <ProjectReference Include="UltimateEditorEnhancer-Editor.csproj">
       <Project>{61a1d446-9bfe-2d33-cc90-31bce5974241}</Project>
       <Name>UltimateEditorEnhancer-Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="DOTween.Modules.csproj">
+      <Project>{531ad8de-ffbc-0528-5245-843f2b41c4d5}</Project>
+      <Name>DOTween.Modules</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

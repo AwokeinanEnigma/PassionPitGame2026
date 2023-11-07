@@ -45,6 +45,7 @@ MonoBehaviour:
     do You know what to do You know what to do Hey ya! (Uh oh) Hey ya! (Uh oh) Hey
     ya! (Uh oh) Hey ya! (Uh oh) Hey ya! (Uh oh) Hey ya! (Uh oh) Hey ya! (Uh oh) Hey
     ya! (Uh oh)
-  Sprite: {fileID: 0}
+  CardPrefab: {fileID: 5563430333574319098, guid: e71cf6b749614dc4697f0b7c2d900c7a,
+    type: 3}
   Cost: 0
   IsImportant: 0

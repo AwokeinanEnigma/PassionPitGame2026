@@ -1,17 +1,29 @@
-﻿using EntityStates;
+﻿using DG.Tweening;
+using EntityStates;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 namespace PassionPitGame {
 	public class CardDeck : MonoBehaviour {
+		[Header("UI")]
+		public GameObject UIParent;
+		public RectTransform CardUIPoint;
+		public RectTransform CardUIHidePoint;
+		
+		
 		public AUXData[] Cards;
+		public GameObject[] CardsGameObjects;
 		public EntityStateMachine Machine;
 		public int CurrentCardIndex;
 		InputEventData _inputEventData = new();
 		AUXState _currentState;
+		
+		
+		
 		public void Awake () {
 			Machine = GetComponent<EntityStateMachine>();
 			Machine.OnStateSwitch += OnStateSwitch;
+			CardsGameObjects = new GameObject[Cards.Length];
 			
 		}
 
@@ -21,7 +33,26 @@ namespace PassionPitGame {
 
 		public void OnStateSwitch () {
 			Debug.Log((Machine.currentState));
-			_currentState = Machine.currentState as AUXState;
+			if ((Machine.currentState as AUXState) != null) {
+				_currentState = Machine.currentState as AUXState;
+				GameObject card = null;
+				if (!CardsGameObjects[CurrentCardIndex]) {
+					card = Instantiate(Cards[CurrentCardIndex].CardPrefab,  CardUIHidePoint.transform.position, Quaternion.identity, UIParent.transform);
+					CardsGameObjects[CurrentCardIndex] = card;
+				} else {
+					card = CardsGameObjects[CurrentCardIndex];
+				}
+				card.transform.DOMove(CardUIPoint.transform.position, 1.5f).From(CardUIHidePoint.transform.position).SetEase(Ease.OutBack);
+				
+				if (CurrentCardIndex > 0) {
+					CardsGameObjects[CurrentCardIndex - 1].transform.DOMove(CardUIHidePoint.transform.position, 1.5f).SetEase(Ease.InBack);
+				}
+				else {
+					// there's a ? operator here because on the first card, the previous card is null
+					CardsGameObjects[CardsGameObjects.Length - 1]?.transform.DOMove(CardUIHidePoint.transform.position, 1.5f).SetEase(Ease.InBack);
+				}
+
+			}
 		}
 
 		public void Click (InputAction.CallbackContext callbackContext) {

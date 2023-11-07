@@ -185,6 +185,9 @@ MonoBehaviour:
     - title: Import Activity
       menuPath: Window/Analysis/Import Activity
       enabled: 1
+    - title: Input Debugger
+      menuPath: Window/Analysis/Input Debugger
+      enabled: 1
     - title: Rendering Debugger
       menuPath: Window/Analysis/Rendering Debugger
       enabled: 1

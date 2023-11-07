@@ -380,6 +380,12 @@
      <Reference Include="Pathfinding.Poly2Tri">
      <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Enigmaware\AstarPathfindingProject\Plugins\Poly2Tri\Pathfinding.Poly2Tri.dll</HintPath>
      </Reference>
+     <Reference Include="DOTween">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+     </Reference>
+     <Reference Include="DOTweenEditor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
+     </Reference>
      <Reference Include="nunit.framework">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
      </Reference>
