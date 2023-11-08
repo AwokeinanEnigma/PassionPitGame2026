@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Enigmaware.Gravity;
 using Enigmaware.World;
 using KinematicCharacterController;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -32,7 +33,10 @@ namespace Enigmaware.Motor
 
             // Like sliding, but less cool.
             Crouching,
-
+            
+            // yeah
+            RailGrinding,
+            
             // For when the velocity of the character is set manually by an outside component (like a vehicle)
             Deferred
         }
@@ -231,7 +235,8 @@ namespace Enigmaware.Motor
 
                 if (_canJump)
                 {
-
+ 
+                    
                     // Calculate jump direction before ungrounding
                     // Makes the character skip ground probing/snapping on its next update. 
                     // If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
@@ -463,7 +468,7 @@ namespace Enigmaware.Motor
         /// <summary>
         /// The actual, curated direction the player wants to move in
         /// </summary>
-        public Vector3 WishDirection { get; private set; }
+        public Vector3 WishDirection;// { get; private set; }
 
         /// <summary>
         /// The raw direction the player wants to move in
@@ -478,7 +483,7 @@ namespace Enigmaware.Motor
         #endregion
 
         #endregion
-
+        public Quaternion Rotation;
         private void Awake()
         {
             Application.targetFrameRate = 500;
@@ -493,8 +498,8 @@ namespace Enigmaware.Motor
             // Assign the characterController to the motor
         }
 
-        public void SetWishDirection(Vector3 direction)
-        {
+        public void SetWishDirection(Vector3 direction) {
+            direction = direction.normalized;
             _rawDirectionalMove = new Vector2(direction.x, direction.z);
             WishDirection = new Vector3(direction.x,0, direction.z);
             ;  //direction;
@@ -612,7 +617,9 @@ namespace Enigmaware.Motor
             {
                 return;
             }
+            
 
+            
             if (IsGrounded)
             {
                 _currentMovementType = MovementType.Ground;
@@ -820,6 +827,9 @@ namespace Enigmaware.Motor
             {
                 case MotorState.Default:
                 {
+                    
+                    currentRotation = Rotation;
+                    
                     if (CurrentBonusOrientationMethod == BonusOrientationMethod.TowardsGravity)
                     {
                         // Rotate from current up to invert gravity
@@ -928,6 +938,7 @@ namespace Enigmaware.Motor
             // 1) We want to be able to control the character's velocity in any way we want
             // 2) I am not shoving all of my movement code here. Fuck you.
             currentVelocity = _velocity;
+            _velocity = currentVelocity;     
 
             Vector3 currentUpD = Motor.TransientRotation * Vector3.up;
             DrawVector(Motor.TransientPosition, Up, 25, Color.red);
@@ -1117,6 +1128,8 @@ namespace Enigmaware.Motor
             ref HitStabilityReport hitStabilityReport)
         {
             lateVelocityCancel = false;
+            
+
             
             if (isVelocityCancelled && !lateVelocityCancel) CalculateOnHitVelocity(hitNormal);
             lateVelocityCancel = isVelocityCancelled;

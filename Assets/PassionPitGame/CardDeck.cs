@@ -35,6 +35,8 @@ namespace PassionPitGame {
 			Debug.Log((Machine.currentState));
 			if ((Machine.currentState as AUXState) != null) {
 				_currentState = Machine.currentState as AUXState;
+				_currentState.CardDeck = this;
+				
 				GameObject card = null;
 				if (!CardsGameObjects[CurrentCardIndex]) {
 					card = Instantiate(Cards[CurrentCardIndex].CardPrefab,  CardUIHidePoint.transform.position, Quaternion.identity, UIParent.transform);
@@ -67,10 +69,14 @@ namespace PassionPitGame {
 				if (CurrentCardIndex >= Cards.Length) {
 					CurrentCardIndex = 0;
 				}
-				Machine.SetState(EntityState.InstantiateState(Cards[CurrentCardIndex].StateType.type));
+				Machine.SetStateInterrupt(EntityState.InstantiateState(Cards[CurrentCardIndex].StateType.type));
 			}
 		}
-		
+
+		public void ForceSwitch () {
+			Machine.SetState(EntityState.InstantiateState(Cards[CurrentCardIndex].StateType.type));
+		}
+
 		public void OnGUI () {
 			GUI.Label(new Rect(0, 0, 100, 100), Cards[CurrentCardIndex].Name);
 		}

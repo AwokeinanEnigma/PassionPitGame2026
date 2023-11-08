@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateEditorEnhancer", "UltimateEditorEnhancer.csproj", "{78a93534-df9d-d5b0-5efc-8d8372df7d9e}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{95169222-d292-d86e-4622-aefdc6efd766}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOTween.Modules", "DOTween.Modules.csproj", "{531ad8de-ffbc-0528-5245-843f2b41c4d5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{95169222-d292-d86e-4622-aefdc6efd766}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateEditorEnhancer-Editor", "UltimateEditorEnhancer-Editor.csproj", "{61a1d446-9bfe-2d33-cc90-31bce5974241}"
 EndProject
@@ -32,10 +32,10 @@ Global
 		{ff50cda9-361a-a1f1-0c74-3911a5292cc1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78a93534-df9d-d5b0-5efc-8d8372df7d9e}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78a93534-df9d-d5b0-5efc-8d8372df7d9e}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95169222-d292-d86e-4622-aefdc6efd766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95169222-d292-d86e-4622-aefdc6efd766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{531ad8de-ffbc-0528-5245-843f2b41c4d5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{531ad8de-ffbc-0528-5245-843f2b41c4d5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95169222-d292-d86e-4622-aefdc6efd766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95169222-d292-d86e-4622-aefdc6efd766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61a1d446-9bfe-2d33-cc90-31bce5974241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61a1d446-9bfe-2d33-cc90-31bce5974241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03aaf9b5-8404-18e2-1e98-94443bb184c9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

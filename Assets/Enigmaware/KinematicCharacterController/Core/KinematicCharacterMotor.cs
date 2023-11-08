@@ -1126,7 +1126,11 @@ namespace KinematicCharacterController
                                             {
                                                 Vector3 characterCenter = _transientPosition + (_transientRotation * _characterTransformToCapsuleCenter);
                                                 Vector3 estimatedCollisionPoint = _transientPosition;
-
+                                                MeshCollider meshCollider = this._internalProbedColliders[i] as MeshCollider;
+                                                if (!meshCollider || meshCollider.convex)
+                                                {
+                                                    Physics.ClosestPoint(characterCenter, this._internalProbedColliders[i], overlappedTransform.position, overlappedTransform.rotation);
+                                                }
 
                                                 StoreRigidbodyHit(
                                                     probedRigidbody,

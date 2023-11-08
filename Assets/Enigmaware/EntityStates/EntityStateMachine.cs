@@ -102,6 +102,7 @@ namespace EntityStates {
 		}
 
 		public void SetStateInterrupt (EntityState newState) {
+			Debug.Log(currentState.CanBeInterrupted());
 			if (currentState.CanBeInterrupted() && newState != null) {
 				nextState = null;
 				newState.stateMachine = this;
@@ -109,6 +110,7 @@ namespace EntityStates {
 				currentState.OnExit();
 				currentState = newState;
 				currentState.OnEnter();
+				OnStateSwitch?.Invoke();
 			} else {
 				Debug.LogWarning($"Tried to interrupt into null state on GameObject {gameObject.name}!");
 			}

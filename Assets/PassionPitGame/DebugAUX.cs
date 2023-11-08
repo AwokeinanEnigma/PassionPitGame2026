@@ -5,5 +5,9 @@ namespace PassionPitGame {
 		public override void OnClick () {
 			OnExit();
 		}
+		
+		public override bool CanBeInterrupted () {
+			return true;
+		}
 	}
 }

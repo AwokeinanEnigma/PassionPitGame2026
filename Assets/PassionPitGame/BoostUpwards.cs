@@ -13,5 +13,9 @@ namespace PassionPitGame {
 			//base.stateMachine.GetComponent<CharacterMotor>().Velocity += (new Vector3(0,25,0));
 			OnExit();
 		}
+		
+		public override bool CanBeInterrupted () {
+			return true;
+		}
 	}
 }

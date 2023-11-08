@@ -334,6 +334,9 @@
      <Reference Include="log4netPlastic">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\PackageCache\com.unity.collab-proxy@1.17.6\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
      </Reference>
+     <Reference Include="DOTween">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+     </Reference>
      <Reference Include="Pathfinding.ClipperLib">
      <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Enigmaware\AstarPathfindingProject\Plugins\Clipper\Pathfinding.ClipperLib.dll</HintPath>
      </Reference>
@@ -357,6 +360,9 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.YamlDotNet">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
+     </Reference>
+     <Reference Include="DOTweenEditor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Burst.Unsafe">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\PackageCache\com.unity.burst@1.7.3\Unity.Burst.Unsafe.dll</HintPath>
@@ -387,12 +393,6 @@
      </Reference>
      <Reference Include="Pathfinding.Poly2Tri">
      <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Enigmaware\AstarPathfindingProject\Plugins\Poly2Tri\Pathfinding.Poly2Tri.dll</HintPath>
-     </Reference>
-     <Reference Include="DOTween">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
-     </Reference>
-     <Reference Include="DOTweenEditor">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
      </Reference>
      <Reference Include="nunit.framework">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
@@ -814,6 +814,9 @@
      <Reference Include="Unity.InputSystem">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.Rider.Editor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
      </Reference>
@@ -955,8 +958,11 @@
      <Reference Include="Unity.SysrootPackage.Editor">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.SysrootPackage.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Rider.Editor">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+     <Reference Include="Unity.TerrainTools">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TerrainTools.Editor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -972,6 +978,10 @@
       <Project>{4ca92db0-8c72-7e0e-e189-6b0cd10561f1}</Project>
       <Name>Assembly-CSharp-Editor-firstpass</Name>
     </ProjectReference>
+    <ProjectReference Include="UltimateEditorEnhancer.csproj">
+      <Project>{78a93534-df9d-d5b0-5efc-8d8372df7d9e}</Project>
+      <Name>UltimateEditorEnhancer</Name>
+    </ProjectReference>
     <ProjectReference Include="PackageToolsEditor.csproj">
       <Project>{a1174e66-6a51-526f-db7e-6726a22270d3}</Project>
       <Name>PackageToolsEditor</Name>
@@ -980,21 +990,17 @@
       <Project>{03aaf9b5-8404-18e2-1e98-94443bb184c9}</Project>
       <Name>AstarPathfindingProjectEditor</Name>
     </ProjectReference>
+    <ProjectReference Include="DOTween.Modules.csproj">
+      <Project>{531ad8de-ffbc-0528-5245-843f2b41c4d5}</Project>
+      <Name>DOTween.Modules</Name>
+    </ProjectReference>
     <ProjectReference Include="AstarPathfindingProject.csproj">
       <Project>{f3708d95-0e5b-133a-8e4b-c6ee98e40813}</Project>
       <Name>AstarPathfindingProject</Name>
     </ProjectReference>
-    <ProjectReference Include="UltimateEditorEnhancer.csproj">
-      <Project>{78a93534-df9d-d5b0-5efc-8d8372df7d9e}</Project>
-      <Name>UltimateEditorEnhancer</Name>
-    </ProjectReference>
     <ProjectReference Include="UltimateEditorEnhancer-Editor.csproj">
       <Project>{61a1d446-9bfe-2d33-cc90-31bce5974241}</Project>
       <Name>UltimateEditorEnhancer-Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="DOTween.Modules.csproj">
-      <Project>{531ad8de-ffbc-0528-5245-843f2b41c4d5}</Project>
-      <Name>DOTween.Modules</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

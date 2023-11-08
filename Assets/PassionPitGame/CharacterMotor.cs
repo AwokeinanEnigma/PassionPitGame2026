@@ -115,7 +115,11 @@ namespace PassionPitGame
                             break;
                     }
                     // apply gravity out of switch statement
-                    ApplyGravity();
+                    if (_currentMovementType != MovementType.Deferred)
+                    {
+                        ApplyGravity();
+                    }
+                    //ApplyGravity();
                     break;
                 }
             }
@@ -125,6 +129,23 @@ namespace PassionPitGame
             }
         }
 
+        public float CalculateYForDirection(Vector3 direction, float max = 100f)
+        {
+            return CalculateYForDirectionAndSpeed(direction, Speed, max);
+        }
+
+        public float CalculateYForDirectionAndSpeed(Vector3 direction, float speed, float max = 100f)
+        {
+            var wishdir = direction.normalized;
+            var x2 = Flatten(wishdir).magnitude;
+            var x1 = speed;
+            var y2 = wishdir.y;
+            var y1 = x1 * y2 / x2;
+
+            if (Mathf.Abs(y1) > max) y1 = Mathf.Sign(y1) * max;
+            return y1;
+        }
+        
         public void LateUpdate()
         {
             _jumpInput.RefreshKeyData();
@@ -476,7 +497,7 @@ namespace PassionPitGame
         public float DoubleJumpHeight;
 
         bool _canJump;
-        bool _canDoubleJump;
+        public bool CanDoubleJump;
 
         private float jumpBuffered;
         private float eatJumpInputs;
@@ -499,9 +520,9 @@ namespace PassionPitGame
             Motor.ForceUnground();
 
             if (!groundJump) {
-                if (_canDoubleJump) {
-                    _canDoubleJump = false;
-                    _velocity.y = Mathf.Max(14, _velocity.y);
+                if (CanDoubleJump) {
+                    CanDoubleJump = false;
+                    _velocity.y = Mathf.Max(DoubleJumpHeight, _velocity.y);
                     // Apply a lurch and give a bit of speed if youre below a certain speed
                     // Good for when players make big mistakes and can use double jump to recover from very low speeds in air
                     var speed = Speed;
@@ -516,8 +537,8 @@ namespace PassionPitGame
                 var height = JumpHeight;
                 if (_velocity.y > 0) height += _velocity.y;
 
-                _velocity.y = Mathf.Max(height, _velocity.y);
-                
+                float beforeY = _velocity.y;
+                _velocity.y = JumpHeight;
             }
 
 
@@ -639,7 +660,7 @@ namespace PassionPitGame
         /// <summary>
         /// The actual, curated direction the player wants to move in
         /// </summary>
-        Vector3 WishDirection { get;  set; }
+        public Vector3 WishDirection { get;  set; }
 
         /// <summary>
         /// The raw direction the player wants to move in
@@ -1067,7 +1088,7 @@ namespace PassionPitGame
         {
         }
 
-        Vector3 Flatten(Vector3 vec)
+        public Vector3 Flatten(Vector3 vec)
         {
             return new Vector3(vec.x, 0f, vec.z);
         }
@@ -1106,7 +1127,7 @@ namespace PassionPitGame
 
         void OnLeaveStableGround()
         {
-            _canDoubleJump = true;
+            CanDoubleJump = true;
         }
 
         void DrawVector(Vector3 origin, Vector3 vector, float lengthMultiplier, Color color)
