@@ -502,7 +502,7 @@ namespace Enigmaware.Motor
             direction = direction.normalized;
             _rawDirectionalMove = new Vector2(direction.x, direction.z);
             WishDirection = new Vector3(direction.x,0, direction.z);
-            ;  //direction;
+            ; //direction;
         }
         
         public void Update()
@@ -546,7 +546,6 @@ namespace Enigmaware.Motor
                             
                             _velocity = GroundMove(WishDirection, _velocity, GroundMovementAcceleration,
                                 GroundMovementSpeed);
-                            _velocity.y = 0;
                             //GroundMove(ref _velocity);
                             break;
                         case MovementType.Air:

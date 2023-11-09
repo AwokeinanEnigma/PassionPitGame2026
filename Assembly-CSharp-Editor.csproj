@@ -823,11 +823,11 @@
      <Reference Include="Analytics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Analytics.dll</HintPath>
      </Reference>
-     <Reference Include="UnityEngine.UI">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-     </Reference>
      <Reference Include="UnityEngine.SpatialTracking">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.UI">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.DataPrivacy">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -907,6 +907,9 @@
      <Reference Include="Unity.Mathematics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.TerrainTools">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Services.Core.Analytics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
      </Reference>
@@ -924,6 +927,9 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.Shared.Editor">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TerrainTools.Editor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Services.Core.Environments">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
@@ -957,12 +963,6 @@
      </Reference>
      <Reference Include="Unity.SysrootPackage.Editor">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.SysrootPackage.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TerrainTools">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TerrainTools.Editor">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

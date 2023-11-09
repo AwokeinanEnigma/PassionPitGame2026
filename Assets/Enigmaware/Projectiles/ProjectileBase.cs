@@ -10,13 +10,14 @@ namespace Enigmaware.Projectiles {
 		public GameObject owner;
 		public ProjectileDamageContainer damageContainer;
 		public ProjectileTargetHolder targetHolder;
-
+		public TeamComponent team;
 		public GameObject target;
 		public virtual void Awake () {
 			projectileController = GetComponent<ProjectileController>();
 			body = GetComponent<Rigidbody>();
 			damageContainer = GetComponent<ProjectileDamageContainer>();
 			targetHolder = GetComponent<ProjectileTargetHolder>();
+			team = GetComponent<TeamComponent>();
 			// Debug.Log("Hey!");
 		}
 

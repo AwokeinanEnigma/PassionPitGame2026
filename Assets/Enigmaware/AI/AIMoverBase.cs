@@ -1,4 +1,5 @@
 ﻿using Enigmaware.Motor;
+using PassionPitGame;
 using System;
 using Pathfinding;
 using Pathfinding.RVO;
@@ -14,7 +15,7 @@ namespace Enigmaware.AI
 
         #region Components
         
-        public KinematicNPCMotor aiMotor;
+        public CharacterMotor aiMotor;
         public Seeker seeker;
         public RVOController rvoController;
         
@@ -30,7 +31,7 @@ namespace Enigmaware.AI
 
         public void Awake()
         {
-            aiMotor = GetComponent<KinematicNPCMotor>();
+            aiMotor = GetComponent<CharacterMotor>();
             seeker = GetComponent<Seeker>();
             rvoController = GetComponent<RVOController>();
         }

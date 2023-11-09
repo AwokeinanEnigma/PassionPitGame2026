@@ -32,7 +32,6 @@ namespace PassionPitGame {
 		}
 
 		public void OnStateSwitch () {
-			Debug.Log((Machine.currentState));
 			if ((Machine.currentState as AUXState) != null) {
 				_currentState = Machine.currentState as AUXState;
 				_currentState.CardDeck = this;
@@ -64,7 +63,6 @@ namespace PassionPitGame {
 		public void Update () {
 			if (_inputEventData.down) {
 				_currentState.OnClick();
-				Debug.Log("clic!");
 				CurrentCardIndex++;
 				if (CurrentCardIndex >= Cards.Length) {
 					CurrentCardIndex = 0;

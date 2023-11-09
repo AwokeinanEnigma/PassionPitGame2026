@@ -54,6 +54,7 @@
      <Compile Include="Assets\Enigmaware\Projectiles\Projectile.cs" />
      <Compile Include="Assets\Enigmaware\Entity\DamageInfo.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\ICharacterController.cs" />
+     <Compile Include="Assets\PassionPitGame\DummyAI.cs" />
      <Compile Include="Assets\Enigmaware\Entity\DamageReport.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hurtbox.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\ExampleCharacter\Scripts\ExampleCharacterController.cs" />
@@ -67,6 +68,7 @@
      <Compile Include="Assets\Enigmaware\EntityStates\EntityStateMachine.cs" />
      <Compile Include="Assets\Enigmaware\EntityStates\Empty.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileBase.cs" />
+     <Compile Include="Assets\Enigmaware\AI\AdvancedAIMover.cs" />
      <Compile Include="Assets\Enigmaware\TransformDictionary.cs" />
      <Compile Include="Assets\Enigmaware\FrameratePanel.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\GravityBoxRedux.cs" />
@@ -93,6 +95,7 @@
      <Compile Include="Assets\Enigmaware\Gravity\GravityBox.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\Enigmaware\MeleeAttack.cs" />
+     <Compile Include="Assets\PassionPitGame\DashAUX.cs" />
      <Compile Include="Assets\Enigmaware\AI\AIStateBase.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnDeath.cs" />
      <Compile Include="Assets\PassionPitGame\BoostUpwards.cs" />
@@ -102,9 +105,10 @@
      <Compile Include="Assets\Enigmaware\Gravity\GravitySource.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hitbox.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnTakeDamage.cs" />
-     <Compile Include="Assets\PassionPitGame\DashAUX.cs" />
-     <Compile Include="Assets\Enigmaware\AI\AdvancedAIMover.cs" />
-     <Compile Include="Assets\PassionPitGame\DummyAI.cs" />
+     <Compile Include="Assets\PassionPitGame\ConceptConstruct.cs" />
+     <Compile Include="Assets\Enigmaware\RotateTowardsDirection.cs" />
+     <Compile Include="Assets\Enigmaware\ExplosionAttack.cs" />
+     <Compile Include="Assets\PassionPitGame\PlayerProjectile.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Settings" />
@@ -123,6 +127,7 @@
      <Folder Include="Assets\Enigmaware\World" />
      <None Include="Assets\Resources\BillingMode.json" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
+     <Folder Include="Assets\tripolygon\UModeler\Materials\Basic\Materials" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
      <Folder Include="Assets\tripolygon\UModeler" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
@@ -154,6 +159,7 @@
      <Folder Include="Assets\Enigmaware\Gravity" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
      <Folder Include="Assets\tripolygon\UModeler\About" />
+     <Folder Include="Assets\Resources\Prefabs" />
      <Folder Include="Assets\TutorialInfo\Scripts" />
      <Folder Include="Assets\TextMesh Pro\Fonts" />
      <Folder Include="Assets\TutorialInfo\Icons" />
@@ -876,11 +882,11 @@
      <Reference Include="Analytics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Analytics.dll</HintPath>
      </Reference>
-     <Reference Include="UnityEngine.UI">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
-     </Reference>
      <Reference Include="UnityEngine.SpatialTracking">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
+     </Reference>
+     <Reference Include="UnityEngine.UI">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Analytics.DataPrivacy">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Analytics.DataPrivacy.dll</HintPath>
@@ -960,6 +966,9 @@
      <Reference Include="Unity.Mathematics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.TerrainTools">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Services.Core.Analytics">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
      </Reference>
@@ -977,6 +986,9 @@
      </Reference>
      <Reference Include="Unity.VisualScripting.Shared.Editor">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.TerrainTools.Editor">
+     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Services.Core.Environments">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.Services.Core.Environments.dll</HintPath>
@@ -1010,12 +1022,6 @@
      </Reference>
      <Reference Include="Unity.SysrootPackage.Editor">
      <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.SysrootPackage.Editor.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TerrainTools">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.TerrainTools.Editor">
-     <HintPath>D:\Development Projects\PassionPitGame2026\Library\ScriptAssemblies\Unity.TerrainTools.Editor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>

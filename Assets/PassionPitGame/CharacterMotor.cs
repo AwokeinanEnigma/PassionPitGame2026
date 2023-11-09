@@ -4,9 +4,11 @@ using Enigmaware.World;
 using KinematicCharacterController;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 
 #endregion
 
@@ -26,8 +28,9 @@ namespace PassionPitGame
 
         void Awake()
         {
-            _input = FindObjectOfType<PlayerInput>();
-            
+            if (!AI) {
+                _input = FindObjectOfType<PlayerInput>();
+            }
             Motor.CharacterController = this;
 
             _cosineMaxSlopeAngle = Mathf.Cos(MaxSlopeAngle * Mathf.Deg2Rad);
@@ -41,12 +44,16 @@ namespace PassionPitGame
         public void Update()
         {
             Application.targetFrameRate = 500;
-            HandleCamera();
-            
+            if (!AI) {
+                HandleCamera();
+            }
             _motionInterpolationDelta += Time.deltaTime;
 
             // create wish direction
-            WishDirection = GetWishDirection();
+
+            if (!AI) {
+                WishDirection = GetWishDirection();
+            }
             //if (Input.GetKey(KeyCode.C)) velocity += _lookInputVector * Time.deltaTime * 50;
             if (IsGrounded)
             {
@@ -88,10 +95,12 @@ namespace PassionPitGame
                             GroundMove(WishDirection, _velocity, GroundMovementAcceleration,
                                 GroundMovementSpeed);
 
-                            //GroundMove(ref _velocity);
+                                //GroundMove(ref _velocity);
                             break;
                         case MovementType.Air:
-                            AirMove(ref _velocity);
+                            if (!AI) {
+                                AirMove(ref _velocity);
+                            }
                             //_velocity = AirMove(WishDirection, _velocity, AirAcceleration, AirMovementSpeed);
 
                             //AirMove(ref _velocity);
@@ -123,7 +132,7 @@ namespace PassionPitGame
                     break;
                 }
             }
-            if (_currentMovementType != MovementType.Sliding)// && _currentMovementType != MovementType.RailGrinding)
+            if (_currentMovementType != MovementType.Sliding && !AI)// && _currentMovementType != MovementType.RailGrinding)
             {
                 CameraController.SetFOV(110);
             }
@@ -305,22 +314,25 @@ namespace PassionPitGame
              }	
          }
          float speed;
-         
+
          /// <summary>
-        /// Used for the default state for when we're not on a planet
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <param name="vel"></param>
-        /// <param name="accel"></param>
-        /// <param name="cap"></param>
-        /// <returns></returns>
-        void GroundMove(Vector3 dir, Vector3 vel, float accel, float cap)
-        {
-            vel = ApplyFriction(vel, _currentDrag);
-            groundTimestamp = _input.tickCount;
-            _velocity = Accelerate(vel, dir, accel, cap); //Accelerate(vel, dir, accel, cap);
-            PlayerJump();
-        }
+         /// Used for the default state for when we're not on a planet
+         /// </summary>
+         /// <param name="dir"></param>
+         /// <param name="vel"></param>
+         /// <param name="accel"></param>
+         /// <param name="cap"></param>
+         /// <returns></returns>
+         void GroundMove (Vector3 dir, Vector3 vel, float accel, float cap) {
+             vel = ApplyFriction(vel, _currentDrag);
+             if (!AI) {
+                 groundTimestamp = _input.tickCount;
+             }
+             _velocity = Accelerate(vel, dir, accel, cap); //Accelerate(vel, dir, accel, cap);
+             if (!AI) {
+                 PlayerJump();
+             }
+         }
 
          #endregion
 
@@ -382,18 +394,17 @@ namespace PassionPitGame
 
             AirAccelerate(ref _velocity, Time.fixedDeltaTime);
 
-            // If we're eating jump inputs, dont check for PlayerJump()
-            // Also set jumpBuffered higher than needed so that when PlayerJump() does eventually run it'll use the buffer
-            if ((eatJump || jumpBuffered > 0))
-            {
-                if (_input.SincePressed(PlayerInput.Jump) == 0)
-                {
-                    jumpBuffered = 4 + Time.fixedDeltaTime * 2;
-                }
+            if (!AI) {
+                // If we're eating jump inputs, dont check for PlayerJump()
+                // Also set jumpBuffered higher than needed so that when PlayerJump() does eventually run it'll use the buffer
+                if ((eatJump || jumpBuffered > 0)) {
+                    if (_input.SincePressed(PlayerInput.Jump) == 0) {
+                        jumpBuffered = 4 + Time.fixedDeltaTime*2;
+                    }
+                } else PlayerJump();
             }
-            else PlayerJump();
-        
         }
+        
         const float AIR_SPEED = 2.4f;
         const float SIDE_AIR_ACCELERATION = 60;
         const float FORWARD_AIR_ACCELERATION = 75;
@@ -404,8 +415,8 @@ namespace PassionPitGame
                 Accelerate(WishDirection, 10, 11/3, f);
                 return;
             }
-
-            var forward = transform.forward*_input.GetAxisStrafeForward();
+            
+            var forward = transform.forward* _input.GetAxisStrafeForward();
             var right = transform.right*_input.GetAxisStrafeRight();
 
             var accel = FORWARD_AIR_ACCELERATION*accelMod;
@@ -805,25 +816,34 @@ namespace PassionPitGame
 
         #region Input
 
+        public bool AI;
         Vector3 GetWishDirection()
         {
-            switch (CurrentCharacterState)
-            {
+            if (!AI) {
+                switch (CurrentCharacterState) {
                 case MotorState.Default:
                     if (!IsGrounded || _currentNormal.y < _cosineMaxSlopeAngle)
-                        return (_rawDirectionalMove.x * CameraController.PlanarRight +
-                                _rawDirectionalMove.y * CameraController.PlanarForward).normalized;
+                        return (_rawDirectionalMove.x*CameraController.PlanarRight +
+                            _rawDirectionalMove.y*CameraController.PlanarForward).normalized;
                     return Vector3
                         .Cross(
-                            (_rawDirectionalMove.x * -CameraController.PlanarForward +
-                             _rawDirectionalMove.y * CameraController.PlanarRight).normalized,
+                            (_rawDirectionalMove.x*-CameraController.PlanarForward +
+                                _rawDirectionalMove.y*CameraController.PlanarRight).normalized,
                             _currentNormal).normalized;
-                
+
+                }
             }
 
             return Vector3.zero;
         }
 
+        public void SetWishDirection(Vector3 direction) {
+            direction = direction.normalized;
+            _rawDirectionalMove = new Vector2(direction.x, direction.z);
+            WishDirection = new Vector3(direction.x,0, direction.z);
+            ; //direction;
+        }
+        
         // These methods are called by Unity
         // Don't mess with them unless you know what you're doing!
         public void ReadMovement(InputAction.CallbackContext context)
@@ -973,8 +993,9 @@ namespace PassionPitGame
         /// This is the ONLY place where you can set the character's velocity
         /// </summary>
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
-            _previousPosition = CameraPosition.position;
-            // Here, we're just going to set the velocity to be the desired velocity we keep in this character motor
+            if (!AI) {
+                _previousPosition = CameraPosition.position;
+            } // Here, we're just going to set the velocity to be the desired velocity we keep in this character motor
             // For two reasons:
             // 1) We want to be able to control the character's velocity in any way we want
             // 2) I am not shoving all of my movement code here. Fuck you.
