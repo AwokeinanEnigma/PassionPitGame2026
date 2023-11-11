@@ -150,6 +150,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   damageContainer: {fileID: 0}
   targetHolder: {fileID: 0}
+  team: {fileID: 0}
   target: {fileID: 0}
   speed: 2.3
 --- !u!114 &8319291114424405114

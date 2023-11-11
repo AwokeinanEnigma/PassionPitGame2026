@@ -7,6 +7,7 @@ using Enigmaware.General;
 using Enigmaware.Motor;
 using Enigmaware.Projectiles;
 using PassionPitGame;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,7 +19,8 @@ namespace EntityStates.AI
         public AdvancedAIMover mover;
         public CharacterMotor motor;
         public Transform child;
-
+        public LoS los;
+        
         private float _timer;
         private float _random;
         private float _shootTimer;
@@ -39,7 +41,8 @@ namespace EntityStates.AI
             _shootTimer = 1;
 
             child = stateMachine.GetComponent<TransformDictionary>().FindTransform("ProjectilePoint");
-
+            los = GetComponentInChildren<LoS>();
+            
             // see grown men cry
             player = GameObject.Find("PlayerObject").GetComponentInChildren<Camera>().transform;
             mover = stateMachine.GetComponentInParent<AdvancedAIMover>();
@@ -79,12 +82,15 @@ namespace EntityStates.AI
                // stateMachine.StartCoroutine(Melee());
             }
 
-            // don't move unless we're in the air
+            // don't move or search unless we're in the air
+            // save performance
             mover.SubmitWishDir = motor.IsGrounded;
-            
+            mover.canSearch = motor.IsGrounded;
+
             _timer += Time.deltaTime;
-            if (_timer > _shootTimer && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee && !mover.reachedDestination)
+            if (_timer > _shootTimer && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee && !mover.reachedDestination && los.CheckLOS() && motor.IsGrounded)
             {
+                motor.Speed = 0;
                 var position = child.position;
                 ProjectileInfo info = new ProjectileInfo()
                 {
@@ -106,6 +112,7 @@ namespace EntityStates.AI
                 state = HidekiRunnerState.Run;
                 _timer = 0;
             }
+            else motor.Speed = 7;
         }
 
         public Vector3 Flatten(Vector3 vector)

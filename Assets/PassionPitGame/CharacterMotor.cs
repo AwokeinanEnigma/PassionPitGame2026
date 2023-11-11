@@ -132,12 +132,45 @@ namespace PassionPitGame
                     break;
                 }
             }
+            if (_velocityStored.magnitude > 0)
+            {
+                if (_velocityStored.y>0)
+                {
+                    Motor.ForceUnground();
+                }
+                _velocity += _velocityStored;
+                _velocityStored = Vector3.zero;
+            }
+            
+            
+            if (_velocityStoredf.magnitude > 0)
+            {
+                if (_velocityStoredf.y>0)
+                {
+                    Motor.ForceUnground();
+                }
+                _velocity = _velocityStoredf;
+                _velocityStoredf = Vector3.zero;
+            }
+            
             if (_currentMovementType != MovementType.Sliding && !AI)// && _currentMovementType != MovementType.RailGrinding)
             {
                 CameraController.SetFOV(110);
             }
         }
 
+        Vector3 _velocityStored;
+        Vector3 _velocityStoredf;
+        public void ApplyForce(Vector3 force)
+        {
+            _velocityStored += force;
+        }
+        
+        public void SetVelocity(Vector3 force)
+        {
+            _velocityStoredf = force;
+        }
+        
         public float CalculateYForDirection(Vector3 direction, float max = 100f)
         {
             return CalculateYForDirectionAndSpeed(direction, Speed, max);

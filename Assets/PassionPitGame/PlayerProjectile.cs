@@ -20,18 +20,20 @@ namespace PassionPitGame {
 				Position = impactInfo.pointOfImpact,
 				Radius = 10,
 				HitEnvironment = false,
-				HitEveryone = true,
+				HitEveryone = false,
 				Team = team.team,
 				LayerMask = LayerMask.GetMask("Hurtbox"),
 				MaximumHits = 25,
-				UseAccuracy = true,
+				UseAccuracy = false,
+				Visualize = true,
+				
 			}.Fire();
 			Debug.Log(results.Count);
 			results.ForEach(result => {
 				CharacterMotor motor = result.HealthComponent.GetComponent<CharacterMotor>();
 				motor.Motor.ForceUnground();
 				//Debug.Log(result.HitPoint - transform.position);
-				motor.Velocity =  Flatten(result.HitPoint - transform.position).normalized * 13 + Vector3.up * 15;
+				motor.SetVelocity(Flatten(result.HitPoint - transform.position).normalized * 13 + Vector3.up * 15);
 			});
 			Destroy(gameObject);
 		}

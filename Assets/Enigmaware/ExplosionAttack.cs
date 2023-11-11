@@ -1,6 +1,7 @@
 #region
 
 using Enigmaware.Entities;
+using PassionPitGame;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
@@ -43,8 +44,10 @@ public class ExplosionAttack {
 	/// If this is enabled, the a raycast will be performed to ensure there's no walls between the explosion and the target.
 	/// </summary>
 	public bool UseAccuracy = false;
-
-	
+	/// <summary>
+	/// If this is enabled, the explosion will be visualized via a sphere.
+	/// </summary>
+	public bool Visualize = false;
 	/// <summary>
 	/// Executes the explosion.
 	/// </summary>
@@ -68,8 +71,7 @@ public class ExplosionAttack {
 
 			if (UseAccuracy) {
 				Debug.DrawRay(Position, collider.transform.position - Position, Color.yellow, 104);
-				if (Physics.RaycastNonAlloc(new Ray(Position, collider.transform.position - Position), _hits, Vector3.Distance(Position, collider.transform.position), LayerMask.GetMask("Environment")) == 0) 
-				{
+				if (Physics.RaycastNonAlloc(new Ray(Position, collider.transform.position - Position), _hits, Vector3.Distance(Position, collider.transform.position), LayerMask.GetMask("Environment")) == 0) {
 					Transform transform = collider.transform;
 					var result = new Result {
 						Collider = collider,
@@ -101,12 +103,14 @@ public class ExplosionAttack {
 				_results.Add(result);
 			}
 		}
-		GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+		if (Visualize) {
+			GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			obj.transform.position = Position;
 			obj.transform.localScale = Vector3.one*Radius*2;
-			obj.GetComponent<Renderer>().material = Resources.Load<Material>("UModeler_Grid_URP 1");
-		
-		return _results;
+			obj.AddComponent<DestructionTimer>().time = 5f;
+			obj.GetComponent<Renderer>().material = Team == TeamComponent.Team.Player ? Resources.Load<Material>("UModeler_Grid_URP 2") : Resources.Load<Material>("UModeler_Grid_URP 1");
+		}
+	return _results;
 	}
 	public struct Result {
 		public Collider Collider;
