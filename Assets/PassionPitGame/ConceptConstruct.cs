@@ -39,7 +39,7 @@ namespace EntityStates.AI
         {
             base.OnEnter();
             _random = Random.Range(1, 2);
-            _shootTimer = 1;
+            _shootTimer = 2.5f;
 
             child = stateMachine.GetComponent<TransformDictionary>().FindTransform("ProjectilePoint");
             los = GetComponentInChildren<LoS>();

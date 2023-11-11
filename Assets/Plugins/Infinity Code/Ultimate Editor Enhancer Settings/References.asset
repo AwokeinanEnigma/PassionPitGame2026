@@ -236,11 +236,20 @@ MonoBehaviour:
     - title: Visual Scripting Graph
       menuPath: Window/Visual Scripting/Visual Scripting Graph
       enabled: 1
+  - title: Terrain
+    enabled: 1
+    items:
+    - title: Terrain Toolbox
+      menuPath: Window/Terrain/Terrain Toolbox
+      enabled: 1
+    - title: Edit Noise
+      menuPath: Window/Terrain/Edit Noise
+      enabled: 1
   _favoriteWindows: []
   _headerRules:
   - enabled: 1
     condition: 0
-    value: --
+    value: H_
     trimChars: -=
     backgroundColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     textColor: {r: 1, g: 1, b: 1, a: 1}
@@ -408,5 +417,11 @@ MonoBehaviour:
     alignWindowToBar: 1
     windowMode: 0
   _sceneHistory:
+  - name: Example2
+    path: Assets/Enigmaware/AstarPathfindingProject/ExampleScenes/Example2_Terrain/Example2.unity
   - name: SampleScene
     path: Assets/Scenes/SampleScene.unity
+  - name: TestScene
+    path: Assets/Scenes/TestScene.unity
+  - name: TiltedIsAFuckingRetard
+    path: Assets/Scenes/TiltedIsAFuckingRetard.unity

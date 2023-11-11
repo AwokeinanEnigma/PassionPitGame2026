@@ -17,9 +17,14 @@ namespace PassionPitGame {
 			foreach (MeleeAttack.AttackResult attackResult in result) {
 				Motor motor = attackResult.healthComponent.GetComponent<Motor>();
 				motor.KMotor.ForceUnground();
-				motor.SetVelocity((GetComponentInChildren<Camera>().transform.forward * 35 ) + Vector3.up * 10);
+				motor.SetVelocity( Flatten(GetComponentInChildren<Camera>().transform.forward )* 25 + Vector3.up * 12.5f);
+				
+				//motor.SetVelocity((GetComponentInChildren<Camera>().transform.forward * 35 ) + Vector3.up * 10);
 			}
 
+		}
+		public Vector3 Flatten (Vector3 f) {
+			return new Vector3(f.x, 0, f.z);
 		}
 	}
 }
