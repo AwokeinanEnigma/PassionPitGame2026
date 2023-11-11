@@ -9,6 +9,7 @@ using Enigmaware.Projectiles;
 using PassionPitGame;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using Random = UnityEngine.Random;
 
 namespace EntityStates.AI
@@ -17,7 +18,7 @@ namespace EntityStates.AI
     {
         public Transform player;
         public AdvancedAIMover mover;
-        public CharacterMotor motor;
+        public AIMotor motor;
         public Transform child;
         public LoS los;
         
@@ -46,7 +47,7 @@ namespace EntityStates.AI
             // see grown men cry
             player = GameObject.Find("PlayerObject").GetComponentInChildren<Camera>().transform;
             mover = stateMachine.GetComponentInParent<AdvancedAIMover>();
-            motor = stateMachine.GetComponentInParent<CharacterMotor>();
+            motor = stateMachine.GetComponentInParent<AIMotor>();
             rotator = stateMachine.GetComponentInChildren<RotateTowardsDirection>();
 
             if (mover != null)
@@ -63,20 +64,13 @@ namespace EntityStates.AI
         {
             base.Update();
             
-            switch (state)
-            {
-                case HidekiRunnerState.Run:
-                    mover.destination = player.position;
-                    rotator.Direction = Flatten(mover.WishDirection);
-                    break;
-                case HidekiRunnerState.Shoot:
-                    rotator.Direction  = player.position - transform.position;
-                    break;
-                case HidekiRunnerState.Melee:
-                    break;
+            mover.destination = player.position;
+            if (!mover.reachedDestination) {
+                rotator.Direction = Flatten(mover.WishDirection);
             }
-            
-           // if (mover.reachedDestination && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee)
+            Debug.Log(mover.reachedDestination);
+
+            // if (mover.reachedDestination && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee)
             {
              //   rotator.Direction  = player.position - transform.position;
                // stateMachine.StartCoroutine(Melee());
@@ -84,13 +78,12 @@ namespace EntityStates.AI
 
             // don't move or search unless we're in the air
             // save performance
-            mover.SubmitWishDir = motor.IsGrounded;
             mover.canSearch = motor.IsGrounded;
+//            Debug.Log(mover.canSearch);
 
             _timer += Time.deltaTime;
-            if (_timer > _shootTimer && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee && !mover.reachedDestination && los.CheckLOS() && motor.IsGrounded)
+            if (_timer > _shootTimer && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee && los.CheckLOS() && motor.IsGrounded)
             {
-                motor.Speed = 0;
                 var position = child.position;
                 ProjectileInfo info = new ProjectileInfo()
                 {
@@ -112,7 +105,6 @@ namespace EntityStates.AI
                 state = HidekiRunnerState.Run;
                 _timer = 0;
             }
-            else motor.Speed = 7;
         }
 
         public Vector3 Flatten(Vector3 vector)
@@ -139,10 +131,10 @@ namespace EntityStates.AI
             List<MeleeAttack.AttackResult> reesults = attack.Hit();
             foreach (MeleeAttack.AttackResult result in reesults)
             {
-                result.healthComponent.GetComponent<CharacterMotor>().Motor.ForceUnground();
+                CharacterMotor motor = result.healthComponent.GetComponent<CharacterMotor>();
+                result.healthComponent.GetComponent<CharacterMotor>().KMotor.ForceUnground();
                 Vector3 vector3 = result.pushDirection * 15;
                 vector3.y += 50;
-                result.healthComponent.GetComponent<CharacterMotor>().Velocity += vector3;
             }
             
             yield return new WaitForSeconds(1.357f);

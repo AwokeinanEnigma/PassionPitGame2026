@@ -1,56 +1,18 @@
 ﻿#region
 
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 #endregion
 
 namespace PassionPitGame {
     public class CameraController : MonoBehaviour {
-        [HideInInspector] public Vector3 EulerRotation;
-        [HideInInspector] public Vector3 FollowEulerRotation;
 
+        public const float VIEWBOBBING_SPEED = 8;
+        public float LookScale = 1;
 
         public Camera PlayerCamera;
 
-
-
-        #region Rotation
-
-        [Range(-90f, 90f)]
-        public float DefaultVerticalAngle = 20f;
-
-        [Range(-90f, 90f)]
-        public float MinVerticalAngle = -90f;
-
-        [Range(-90f, 90f)]
-        public float MaxVerticalAngle = 90f;
-
-        #endregion
-
-
-        public Vector3 RotationOffset;
-        public Vector3 TargetRotationOffset;
-        public float MouseSensitivity;
-
-        public float FOVChangeSmoothness;
-
-
-        public Transform FollowTransform;
-
-
-        public float CameraTiltSmoothness;
-        public float TargetCameraTilt;
-        [SerializeField]
-        bool _dynamicCamera = true;
-        [SerializeField]
-        bool _dynamicFOV = true;
-        [SerializeField]
-        float _targetFOV = 110;
-
-        private Vector2 _input;
-        private readonly Vector3 _plane = new(1, 0, 1);
+        public CharacterMotor CharacterMotor;
 
         #region Properties
 
@@ -90,53 +52,77 @@ namespace PassionPitGame {
         }
 
         public Vector3 PlanarDirection { get; set; }
-
+        readonly Vector3 _plane = new Vector3(1, 0, 1);
         #endregion
 
-        public CharacterMotor Motor;
         
+        private float cameraRotation;
+        private float cameraRotationSpeed;
+        private float previousYVelocity;
+        private float threeSixtyCounter;
+
+        private float velocityThunk;
+        private float velocityThunkSmoothed;
+        private float viewBobbingAmount;
+        public float Yaw { get; set; }
+        public float YawFutureInterpolation { get; set; }
+        public float YawIncrease { get; set; }
+        public float Pitch { get; set; }
+        public float PitchFutureInterpolation { get; set; }
+        public float CameraRoll { get; set; }
+
         private void Awake () {
             Cursor.lockState = CursorLockMode.Locked;
             PlanarDirection = Vector3.forward;
         }
         public void Update () {
-            base.transform.position = Motor.InterpolatedPosition;
-            EulerRotation += new Vector3(-_input.y, 0, 0)*MouseSensitivity;
-            PlayerCamera.transform.eulerAngles += new Vector3(0, _input.x, 0)*MouseSensitivity;
-            EulerRotation.x = Mathf.Clamp(EulerRotation.x, MinVerticalAngle, MaxVerticalAngle);
-            if (!Mathf.Approximately(_targetFOV, PlayerCamera.fieldOfView)) {
-                PlayerCamera.fieldOfView = Mathf.Lerp(PlayerCamera.fieldOfView, _targetFOV, FOVChangeSmoothness*Time.deltaTime);
-                PlayerCamera.fieldOfView = Mathf.Round(PlayerCamera.fieldOfView*100)/100;
-            }
-            if (!Mathf.Approximately(EulerRotation.z, TargetCameraTilt)) {
-                EulerRotation.z = Mathf.Lerp(EulerRotation.z, TargetCameraTilt, CameraTiltSmoothness*Time.deltaTime);
-            }
-            if (!Mathf.Approximately(TargetRotationOffset.magnitude, RotationOffset.magnitude)) {
-                RotationOffset = Vector3.Lerp(RotationOffset, TargetRotationOffset, CameraTiltSmoothness*Time.deltaTime);
-            }
-            base.transform.eulerAngles = new Vector3(EulerRotation.x, base.transform.eulerAngles.y, EulerRotation.z) + RotationOffset;
+            if (Time.timeScale > 0) {
+                 YawIncrease = Input.GetAxis("Mouse X")*(1f/10)*LookScale;
+                 YawIncrease += Input.GetAxis("Joy 1 X 2")*1*LookScale;
 
-            // Many times I've almost erased this comment
-            // Let it be known, that this comment is eternally immortalized in the code
-            // You will never be able to erase this comment, not as long as I live, fucker.
-            // Finuyuiiiiiiiiiiiiiiiiiiiiiiiiiuuuuuuuuuuukoi8uuuuuuuuuu u uuu uu u u u u u u u u u u u u ud the smoothed camera orbit position
-        }
-        private void OnValidate () {
-            DefaultVerticalAngle = Mathf.Clamp(DefaultVerticalAngle, MinVerticalAngle, MaxVerticalAngle);
-        }
-        public void Tilt (float angle) {
-            if (!_dynamicCamera) return;
-            TargetCameraTilt = angle;
-        }
+                 Yaw = (Yaw + YawIncrease)%360f;
 
-        public void SetFOV (float newFOV) {
-            if (!_dynamicFOV) return;
-            _targetFOV = newFOV;
-        }
-        
-        public void Look (InputAction.CallbackContext context) {
-            _input = context.ReadValue<Vector2>();
-        }
 
+                 var yawinterpolation = Mathf.Lerp(Yaw, Yaw + YawFutureInterpolation, Time.deltaTime*10) - Yaw;
+                 Yaw += yawinterpolation;
+                 YawFutureInterpolation -= yawinterpolation;
+
+                 Pitch -= Input.GetAxis("Mouse Y")*(1f/10)*LookScale;
+                 Pitch += Input.GetAxis("Joy 1 Y 2")*1f*LookScale;
+                 
+               var pitchinterpolation = Mathf.Lerp(Pitch, Pitch + PitchFutureInterpolation, Time.deltaTime*10) - Pitch;
+                 Pitch += pitchinterpolation;
+                 PitchFutureInterpolation -= pitchinterpolation;
+
+                 Pitch = Mathf.Clamp(Pitch, -85, 85);
+            }
+
+            threeSixtyCounter -= Mathf.Min(threeSixtyCounter, Time.deltaTime*150);
+            threeSixtyCounter += Mathf.Abs(YawIncrease);
+            if (threeSixtyCounter > 240) {
+                threeSixtyCounter -= 240;
+            }
+
+            // This is where orientation is handled, the PlayerCamera is only adjusted by the pitch, and the entire player is adjusted by yaw
+            velocityThunk = Mathf.Lerp(velocityThunk, 0, Time.deltaTime*4);
+            velocityThunkSmoothed = Mathf.Lerp(velocityThunkSmoothed, velocityThunk, Time.deltaTime*16);
+             
+            velocityThunk += (CharacterMotor.Velocity.y - previousYVelocity)/3f;
+            previousYVelocity = CharacterMotor.Velocity.y;
+
+            viewBobbingAmount -= Mathf.Min(Time.deltaTime*3, viewBobbingAmount);
+            var yawBobbing = (Mathf.Sin((Time.time*VIEWBOBBING_SPEED) + Mathf.PI/2) - 0.5f)*viewBobbingAmount*0.6f;
+            var pitchBobbing = (Mathf.Abs(Mathf.Sin(Time.time*VIEWBOBBING_SPEED)) - 0.5f)*viewBobbingAmount*0.4f;
+
+            PlayerCamera.transform.localRotation =
+                Quaternion.Euler(new Vector3(Pitch + velocityThunkSmoothed - pitchBobbing, 0, CameraRoll));
+            CharacterMotor.Rotation = Quaternion.Euler(0, Yaw + yawBobbing, 0);
+
+            // This value is used to calcuate the positions in between each fixedupdate tick
+
+            CameraRoll -= Mathf.Sign(CameraRoll - cameraRotation)*Mathf.Min(cameraRotationSpeed*Time.deltaTime,
+                Mathf.Abs(CameraRoll - cameraRotation));
+            PlayerCamera.transform.position = CharacterMotor.InterpolatedPosition;
+        }
     }
 }

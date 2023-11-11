@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Enigmaware.Projectiles;
+using UnityEngine;
 namespace PassionPitGame {
 	public class DashAUX : AUXState {
 		public CharacterMotor Motor;
@@ -12,6 +13,7 @@ namespace PassionPitGame {
 		Vector3 BeforeDashVector;
 		public const float DASH_SPEEDGAIN = 14;
 		public const float DASH_SPEEDGAIN_CAP = 7f;
+		Vector3 _footPosition;
 		public override void OnClick () {
 			BeforeDashVector = Motor.Velocity;
 			dash = true;
@@ -21,16 +23,41 @@ namespace PassionPitGame {
 			} else {
 				DashVector = Motor.transform.forward;
 			}
+			Vector3 position = transform.position;
+			position.y -= Motor.KMotor.Capsule.height * 0.5f;
+			_footPosition = position;
+			ProjectileInfo info = new ProjectileInfo()
+			{
+				projectilePrefab = _projectile,
+				owner = this.gameObject,
+				moveDir = Vector3.down * 2,
+				position = _footPosition,
+				team = TeamComponent.Team.Player,
+				damageInfo = new DamageInfo()
+				{
+					Attacker = base.gameObject,
+					Damage = 1,
+					Force = Vector3.up * 20,
+					Inflictor = gameObject,
+				}
+			};
+			//ProjectileController.LaunchProjectile(info);
 		}
-		float stopwatch;
+		float _stopwatch;
+		float _pStopwatch;
+		float _interval = 0.01f;
+		GameObject _projectile = Resources.Load<GameObject>("Prefabs/LiterallyMe 1");
 		public override void FixedUpdate () {
 			base.FixedUpdate();
 			
 			if (dash) { 
-				stopwatch += Time.fixedDeltaTime;
+				_stopwatch += Time.fixedDeltaTime;
+				_pStopwatch += Time.fixedDeltaTime;
 				Motor.Velocity = Vector3.zero;
 				Motor.RootMotion += DashVector * (7 * 14 * Time.fixedDeltaTime);
-				if (stopwatch > 0.07F) {
+				// this should only spawn 7 projectiles
+				// ( 0.07 / 0.01 )
+				if (_stopwatch > 0.07F) {
 					var wishdir = Motor.RootMotion.normalized;
 
 					var y = Motor.CalculateYForDirectionAndSpeed(wishdir, Motor.Flatten(BeforeDashVector).magnitude, 30);
@@ -45,7 +72,22 @@ namespace PassionPitGame {
 					Motor.Velocity += Motor.Flatten(Motor.Velocity).normalized * rawgain;
 
 					Motor.CanDoubleJump = true;
-					
+					ProjectileInfo info = new ProjectileInfo()
+					{
+						projectilePrefab = _projectile,
+						owner = this.gameObject,
+						moveDir = Vector3.down * 2,
+						position = _footPosition,
+						team = TeamComponent.Team.Player,
+						damageInfo = new DamageInfo()
+						{
+							Attacker = base.gameObject,
+							Damage = 1,
+							Force = Vector3.up * 20,
+							Inflictor = gameObject,
+						}
+					};
+					//ProjectileController.LaunchProjectile(info);
 					dash = false; ;
 					Motor.ForceMovementType(CharacterMotor.MovementType.Air);
 					CardDeck.ForceSwitch();

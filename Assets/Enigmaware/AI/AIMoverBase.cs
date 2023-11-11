@@ -15,7 +15,7 @@ namespace Enigmaware.AI
 
         #region Components
         
-        public CharacterMotor aiMotor;
+        public PassionPitGame.Motor aiMotor;
         public Seeker seeker;
         public RVOController rvoController;
         
@@ -31,7 +31,7 @@ namespace Enigmaware.AI
 
         public void Awake()
         {
-            aiMotor = GetComponent<CharacterMotor>();
+            //aiMotor = GetComponent<PassionPitGame.Motor>();
             seeker = GetComponent<Seeker>();
             rvoController = GetComponent<RVOController>();
         }

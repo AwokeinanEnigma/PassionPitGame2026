@@ -26,12 +26,12 @@ namespace Enigmaware.Projectiles {
 				Visualize = true,
 				
 			}.Fire();
-			Debug.Log(results.Count);
+			//Debug.Log(results.Count);
 			results.ForEach(result => {
-				CharacterMotor motor = result.HealthComponent.GetComponent<CharacterMotor>();
-				motor.Motor.ForceUnground();
+				//CharacterMotor motor = result.HealthComponent.GetComponent<CharacterMotor>();
+				//motor.Motor.ForceUnground();
 				//Debug.Log(result.HitPoint - transform.position);
-				motor.SetVelocity(Flatten(result.HitPoint - transform.position).normalized * 13 + Vector3.up * 15);
+				//motor.SetVelocity(Flatten(result.HitPoint - transform.position).normalized * 13 + Vector3.up * 15);
 			});
 			Destroy(gameObject);
 		}

@@ -20,13 +20,13 @@ namespace PassionPitGame {
             player = GameObject.Find("PlayerObject");
         }
 
-        public bool CheckLOS () {
+        public bool CheckLOS() {
             Vector3 directionToTarget = (player.transform.position - transform.position).normalized;
             float distanceToTarget = Vector3.Distance(transform.position, player.transform.position);
-            //Debug.Log($"Distance to target is '{distanceToTarget}' and the direction is {directionToTarget}.");
+            int hitCount = Physics.RaycastNonAlloc(transform.position, directionToTarget, _raycastHits, distanceToTarget, obstructionMask);
 
-            if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
-            {
+            // If there are no hits then the player is not obstructed.
+            if (hitCount == 0) {
                 return true;
             }
             return false;

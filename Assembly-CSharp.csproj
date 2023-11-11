@@ -58,6 +58,7 @@
      <Compile Include="Assets\Enigmaware\Entity\DamageReport.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hurtbox.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\ExampleCharacter\Scripts\ExampleCharacterController.cs" />
+     <Compile Include="Assets\PassionPitGame\PunchAUX.cs" />
      <Compile Include="Assets\Enigmaware\Interval.cs" />
      <Compile Include="Assets\Enigmaware\Motors\KinematicNPCMotor.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\GravityPlane.cs" />
@@ -74,9 +75,11 @@
      <Compile Include="Assets\Enigmaware\FrameratePanel.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\GravityBoxRedux.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\KinematicCharacterMotor.cs" />
+     <Compile Include="Assets\PassionPitGame\LoS.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\ReadOnlyAttribute.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileDamageContainer.cs" />
      <Compile Include="Assets\PassionPitGame\DebugAUX.cs" />
+     <Compile Include="Assets\PassionPitGame\SingleProjectileAUX.cs" />
      <Compile Include="Assets\Enigmaware\World\SurfaceInfo.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\PlanetRotator.cs" />
      <Compile Include="Assets\Enigmaware\AI\BasicAIMover.cs" />
@@ -84,12 +87,14 @@
      <Compile Include="Assets\Enigmaware\Entity\HealthComponent.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileTargetHolder.cs" />
      <Compile Include="Assets\PassionPitGame\PlayerInput.cs" />
+     <Compile Include="Assets\PassionPitGame\Motor.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileController.cs" />
      <Compile Include="Assets\PassionPitGame\CharacterMotor.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\GravitySphere.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\CustomGravity.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnIncomingDamage.cs" />
      <Compile Include="Assets\Enigmaware\EntityStates\SerializableEntityStateType.cs" />
+     <Compile Include="Assets\PassionPitGame\LoSEditor.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\KinematicCharacterSystem.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnDamageOther.cs" />
      <Compile Include="Assets\PassionPitGame\ConceptConstruct.cs" />
@@ -98,6 +103,7 @@
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <Compile Include="Assets\Enigmaware\MeleeAttack.cs" />
      <Compile Include="Assets\PassionPitGame\PlayerProjectile.cs" />
+     <Compile Include="Assets\PassionPitGame\AIMotor.cs" />
      <Compile Include="Assets\PassionPitGame\DashAUX.cs" />
      <Compile Include="Assets\Enigmaware\RotateTowardsDirection.cs" />
      <Compile Include="Assets\Enigmaware\AI\AIStateBase.cs" />
@@ -110,8 +116,6 @@
      <Compile Include="Assets\Enigmaware\Gravity\GravitySource.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hitbox.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnTakeDamage.cs" />
-     <Compile Include="Assets\PassionPitGame\LoS.cs" />
-     <Compile Include="Assets\PassionPitGame\LoSEditor.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Settings" />
@@ -143,6 +147,7 @@
      <Folder Include="Assets\TextMesh Pro" />
      <None Include="Assets\tripolygon\UModeler\Materials\Basic\UModeler_UnlitVertexColorShader.shader" />
      <Folder Include="Assets\Resources" />
+     <Folder Include="Assets\terrain data" />
      <Folder Include="Assets\Enigmaware\KinematicCharacterController\ExampleCharacter\Scripts" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />

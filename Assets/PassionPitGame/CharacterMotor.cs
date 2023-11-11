@@ -17,7 +17,7 @@ namespace PassionPitGame
 
 
 
-    public class CharacterMotor : MonoBehaviour, ICharacterController
+    public class CharacterMotor : Motor, ICharacterController
     {
         public Transform CameraPosition;
         float _motionInterpolationDelta;
@@ -31,7 +31,7 @@ namespace PassionPitGame
             if (!AI) {
                 _input = FindObjectOfType<PlayerInput>();
             }
-            Motor.CharacterController = this;
+            KMotor.CharacterController = this;
 
             _cosineMaxSlopeAngle = Mathf.Cos(MaxSlopeAngle * Mathf.Deg2Rad);
             
@@ -44,9 +44,6 @@ namespace PassionPitGame
         public void Update()
         {
             Application.targetFrameRate = 500;
-            if (!AI) {
-                HandleCamera();
-            }
             _motionInterpolationDelta += Time.deltaTime;
 
             // create wish direction
@@ -112,7 +109,6 @@ namespace PassionPitGame
                                 Vector3.down - Vector3.Dot(_currentNormal, Vector3.down) * _currentNormal;
 
                             _velocity += slideDir * SlideAcceleration;
-                            CameraController.SetFOV(110 + _velocity.magnitude / 3);
                                                                                                                                                 break;
                         case MovementType.Crouching:
                             _currentDrag = CrouchDrag;
@@ -136,7 +132,7 @@ namespace PassionPitGame
             {
                 if (_velocityStored.y>0)
                 {
-                    Motor.ForceUnground();
+                    KMotor.ForceUnground();
                 }
                 _velocity += _velocityStored;
                 _velocityStored = Vector3.zero;
@@ -147,26 +143,21 @@ namespace PassionPitGame
             {
                 if (_velocityStoredf.y>0)
                 {
-                    Motor.ForceUnground();
+                    KMotor.ForceUnground();
                 }
                 _velocity = _velocityStoredf;
                 _velocityStoredf = Vector3.zero;
-            }
-            
-            if (_currentMovementType != MovementType.Sliding && !AI)// && _currentMovementType != MovementType.RailGrinding)
-            {
-                CameraController.SetFOV(110);
             }
         }
 
         Vector3 _velocityStored;
         Vector3 _velocityStoredf;
-        public void ApplyForce(Vector3 force)
+        public override void ApplyForce(Vector3 force)
         {
             _velocityStored += force;
         }
         
-        public void SetVelocity(Vector3 force)
+        public override void SetVelocity(Vector3 force)
         {
             _velocityStoredf = force;
         }
@@ -302,8 +293,6 @@ namespace PassionPitGame
 
         #region Fields
 
-        public Vector3 RootMotion;
-        public KinematicCharacterMotor Motor;
         [FormerlySerializedAs("_cameraController")]
         [SerializeField]
          CameraController CameraController;
@@ -330,7 +319,7 @@ namespace PassionPitGame
          public float CrouchAcceleration;
          public float CameraCrouchSpeed;
 
-         public bool IsGrounded => Motor.GroundingStatus.IsStableOnGround;
+         public bool IsGrounded => KMotor.GroundingStatus.IsStableOnGround;
          public float Speed {
              get {
                  var flat = Flatten(_velocity);
@@ -360,6 +349,9 @@ namespace PassionPitGame
              vel = ApplyFriction(vel, _currentDrag);
              if (!AI) {
                  groundTimestamp = _input.tickCount;
+             }
+             if (name == "condition") {
+                 Debug.Log(dir);
              }
              _velocity = Accelerate(vel, dir, accel, cap); //Accelerate(vel, dir, accel, cap);
              if (!AI) {
@@ -415,8 +407,8 @@ namespace PassionPitGame
             bool eatJump = false;
             // Lean in
             var movement = _velocity;
-            var didHit = Motor.CharacterCollisionsSweep(Motor.TransientPosition, Motor.TransientRotation,movement.normalized, movement.magnitude * 0.25F, out _groundApproachHit,_otherGroundApproachHits) > 0;
-            if (didHit && Motor.IsStableOnNormal(_groundApproachHit.normal) && IsColliderValidForCollisions(_groundApproachHit.collider))
+            var didHit = KMotor.CharacterCollisionsSweep(KMotor.TransientPosition, KMotor.TransientRotation,movement.normalized, movement.magnitude * 0.25F, out _groundApproachHit,_otherGroundApproachHits) > 0;
+            if (didHit && KMotor.IsStableOnNormal(_groundApproachHit.normal) && IsColliderValidForCollisions(_groundApproachHit.collider))
             {
                 // Eat jump inputs if you are < jumpForgiveness away from the ground to not eat double jump
                 if (_groundApproachHit.distance / movement.magnitude / Time.fixedDeltaTime < 5)
@@ -561,7 +553,7 @@ namespace PassionPitGame
 
             groundTimestamp = -10000;
 
-            Motor.ForceUnground();
+            KMotor.ForceUnground();
 
             if (!groundJump) {
                 if (CanDoubleJump) {
@@ -704,7 +696,7 @@ namespace PassionPitGame
         /// <summary>
         /// The actual, curated direction the player wants to move in
         /// </summary>
-        public Vector3 WishDirection { get;  set; }
+        public Vector3 WishDirection;// { get;  set; }
 
         /// <summary>
         /// The raw direction the player wants to move in
@@ -760,56 +752,7 @@ namespace PassionPitGame
              if (speed > 150) speed = 150;
              cameraRotationSpeed = speed;
          }
-
-        void HandleCamera () {
-             if (Time.timeScale > 0) {
-                 YawIncrease = Input.GetAxis("Mouse X")*(1f/10)*LookScale;
-                 YawIncrease += Input.GetAxis("Joy 1 X 2")*1*LookScale;
-
-                 Yaw = (Yaw + YawIncrease)%360f;
-
-
-                 var yawinterpolation = Mathf.Lerp(Yaw, Yaw + YawFutureInterpolation, Time.deltaTime*10) - Yaw;
-                 Yaw += yawinterpolation;
-                 YawFutureInterpolation -= yawinterpolation;
-
-                 Pitch -= Input.GetAxis("Mouse Y")*(1f/10)*LookScale;
-                 Pitch += Input.GetAxis("Joy 1 Y 2")*1f*LookScale;
-                 
-             var pitchinterpolation = Mathf.Lerp(Pitch, Pitch + PitchFutureInterpolation, Time.deltaTime*10) - Pitch;
-                 Pitch += pitchinterpolation;
-                 PitchFutureInterpolation -= pitchinterpolation;
-
-                 Pitch = Mathf.Clamp(Pitch, -85, 85);
-             }
-
-             threeSixtyCounter -= Mathf.Min(threeSixtyCounter, Time.deltaTime*150);
-             threeSixtyCounter += Mathf.Abs(YawIncrease);
-             if (threeSixtyCounter > 240) {
-                 threeSixtyCounter -= 240;
-             }
-
-             // This is where orientation is handled, the Camera is only adjusted by the pitch, and the entire player is adjusted by yaw
-             velocityThunk = Mathf.Lerp(velocityThunk, 0, Time.deltaTime*4);
-             velocityThunkSmoothed = Mathf.Lerp(velocityThunkSmoothed, velocityThunk, Time.deltaTime*16);
-             
-             velocityThunk += (_velocity.y - previousYVelocity)/3f;
-             previousYVelocity = _velocity.y;
-
-             viewBobbingAmount -= Mathf.Min(Time.deltaTime*3, viewBobbingAmount);
-             var yawBobbing = (Mathf.Sin((Time.time*VIEWBOBBING_SPEED) + Mathf.PI/2) - 0.5f)*viewBobbingAmount*0.6f;
-             var pitchBobbing = (Mathf.Abs(Mathf.Sin(Time.time*VIEWBOBBING_SPEED)) - 0.5f)*viewBobbingAmount*0.4f;
-
-             CameraController.transform.localRotation =
-                 Quaternion.Euler(new Vector3(Pitch + velocityThunkSmoothed - pitchBobbing, 0, CameraRoll));
-             Rotation = Quaternion.Euler(0, Yaw + yawBobbing, 0);
-
-             // This value is used to calcuate the positions in between each fixedupdate tick
-
-             CameraRoll -= Mathf.Sign(CameraRoll - cameraRotation)*Mathf.Min(cameraRotationSpeed*Time.deltaTime,
-                 Mathf.Abs(CameraRoll - cameraRotation));
-             Camera.transform.position = InterpolatedPosition;
-         }
+        
 
         public Quaternion Rotation;
 
@@ -870,7 +813,7 @@ namespace PassionPitGame
             return Vector3.zero;
         }
 
-        public void SetWishDirection(Vector3 direction) {
+        public void SetWishDirection (Vector3 direction) {
             direction = direction.normalized;
             _rawDirectionalMove = new Vector2(direction.x, direction.z);
             WishDirection = new Vector3(direction.x,0, direction.z);
@@ -913,7 +856,7 @@ namespace PassionPitGame
                 if (!_isCrouching)
                 {
                     _isCrouching = true;
-                    Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
+                    KMotor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
                     _meshTargetScale = new Vector3(1, 0.3f, 1);
                 }
             }
@@ -954,6 +897,7 @@ namespace PassionPitGame
                 Vector3.Scale(wishDirection, _plane).normalized);
             float speedGain = accelerationRate * Time.deltaTime;
 
+            
             if (speed + speedGain > accelerationLimit)
                 speedGain = Mathf.Clamp(accelerationLimit - speed, 0, accelerationLimit);
 
@@ -991,17 +935,17 @@ namespace PassionPitGame
                         1 - Mathf.Exp(-BonusOrientationSharpness*deltaTime));
                     currentRotation = Quaternion.FromToRotation(Vector3.up, smoothedGravityDir)*currentRotation;
                 } else if (CurrentBonusOrientationMethod == BonusOrientationMethod.TowardsGroundSlopeAndGravity) {
-                    if (Motor.GroundingStatus.IsStableOnGround) {
+                    if (KMotor.GroundingStatus.IsStableOnGround) {
                         Vector3 smoothedGroundNormal = Vector3.Slerp(Vector3.up,
-                            Motor.GroundingStatus.GroundNormal,
+                            KMotor.GroundingStatus.GroundNormal,
                             1 - Mathf.Exp(-BonusOrientationSharpness*deltaTime));
                         currentRotation = Quaternion.FromToRotation(Vector3.up, smoothedGroundNormal)*
                             currentRotation;
 
 
                         /* Move the position to create a rotation around the bottom hemi center instead of around the pivot
-                        Motor.SetTransientPosition(initialCharacterBottomHemiCenter +
-                                                   (currentRotation * Vector3.down * Motor.Capsule.radius));
+                        KMotor.SetTransientPosition(initialCharacterBottomHemiCenter +
+                                                   (currentRotation * Vector3.down * KMotor.Capsule.radius));
                     } else {
                         Vector3 smoothedGravityDir = Vector3.Slerp(Vector3.up, -CurrentGravity.normalized,
                             1 - Mathf.Exp(-BonusOrientationSharpness*deltaTime));
@@ -1034,9 +978,9 @@ namespace PassionPitGame
             // 2) I am not shoving all of my movement code here. Fuck you.
             currentVelocity = _velocity;
 
-            Vector3 currentUpD = Motor.TransientRotation * Vector3.up;
-            DrawVector(Motor.TransientPosition, Vector3.up, 25, Color.red);
-            DrawVector(Motor.TransientPosition, -Vector3.up, 25, Color.blue);
+            Vector3 currentUpD = KMotor.TransientRotation * Vector3.up;
+            DrawVector(KMotor.TransientPosition, Vector3.up, 25, Color.red);
+            DrawVector(KMotor.TransientPosition, -Vector3.up, 25, Color.blue);
         }
 
 
@@ -1052,9 +996,9 @@ namespace PassionPitGame
             {
                 Vector3 storage = RootMotion;
                 RootMotion = Vector3.zero;
-                Motor.MoveCharacter(base.transform.position + storage);
+                KMotor.MoveCharacter(base.transform.position + storage);
             } 
-            DrawVector(Motor.TransientPosition, _velocity, 25, Color.green);
+            DrawVector(KMotor.TransientPosition, _velocity, 25, Color.green);
             
             if (
                 _mHHit
@@ -1079,7 +1023,7 @@ namespace PassionPitGame
         /// </summary>
         public void AfterCharacterUpdate(float deltaTime)
         {
-            //Debug.Log(Motor.CharacterCollisionsOverlap(base.transform.position, base.transform.rotation, hits)) ;
+            //Debug.Log(KMotor.CharacterCollisionsOverlap(base.transform.position, base.transform.rotation, hits)) ;
 
 
             switch (CurrentCharacterState)
@@ -1089,16 +1033,16 @@ namespace PassionPitGame
                     if (_isCrouching && !_shouldBeCrouching)
                     {
                         // Do an overlap test with the character's standing height to see if there are any obstructions
-                        Motor.SetCapsuleDimensions(0.5f, 2f, 1f);
-                        if (Motor.CharacterOverlap(
-                                Motor.TransientPosition,
-                                Motor.TransientRotation,
+                        KMotor.SetCapsuleDimensions(0.5f, 2f, 1f);
+                        if (KMotor.CharacterOverlap(
+                                KMotor.TransientPosition,
+                                KMotor.TransientRotation,
                                 _genericColliderCheck,
-                                Motor.CollidableLayers,
+                                KMotor.CollidableLayers,
                                 QueryTriggerInteraction.Ignore) > 0)
                         {
                             // If obstructions, just stick to crouching dimensions
-                            Motor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
+                            KMotor.SetCapsuleDimensions(0.5f, CrouchedCapsuleHeight, CrouchedCapsuleHeight * 0.5f);
                             _meshTargetScale = new Vector3(1, 0.3f, 1);
                         }
                         else
@@ -1122,9 +1066,9 @@ namespace PassionPitGame
         public void PostGroundingUpdate(float deltaTime)
         {
             // Handle landing and leaving ground
-            if (Motor.GroundingStatus.IsStableOnGround && !Motor.LastGroundingStatus.IsStableOnGround)
+            if (KMotor.GroundingStatus.IsStableOnGround && !KMotor.LastGroundingStatus.IsStableOnGround)
                 OnLanded();
-            else if (!Motor.GroundingStatus.IsStableOnGround && Motor.LastGroundingStatus.IsStableOnGround)
+            else if (!KMotor.GroundingStatus.IsStableOnGround && KMotor.LastGroundingStatus.IsStableOnGround)
                 OnLeaveStableGround();
         }
 

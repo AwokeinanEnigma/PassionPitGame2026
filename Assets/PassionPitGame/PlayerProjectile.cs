@@ -28,10 +28,9 @@ namespace PassionPitGame {
 				Visualize = true,
 				
 			}.Fire();
-			Debug.Log(results.Count);
 			results.ForEach(result => {
-				CharacterMotor motor = result.HealthComponent.GetComponent<CharacterMotor>();
-				motor.Motor.ForceUnground();
+				Motor motor = result.HealthComponent.GetComponent<Motor>();
+				motor.KMotor.ForceUnground();
 				//Debug.Log(result.HitPoint - transform.position);
 				motor.SetVelocity(Flatten(result.HitPoint - transform.position).normalized * 13 + Vector3.up * 15);
 			});
