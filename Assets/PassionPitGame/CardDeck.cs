@@ -50,7 +50,7 @@ namespace PassionPitGame {
 				}
 				else {
 					// there's a ? operator here because on the first card, the previous card is null
-					CardsGameObjects[CardsGameObjects.Length - 1]?.transform.DOMove(CardUIHidePoint.transform.position, 1.5f).SetEase(Ease.InBack);
+					CardsGameObjects[^1]?.transform.DOMove(CardUIHidePoint.transform.position, 1.5f).SetEase(Ease.InBack);
 				}
 
 			}

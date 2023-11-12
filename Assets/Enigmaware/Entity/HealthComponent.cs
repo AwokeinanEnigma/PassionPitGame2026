@@ -29,9 +29,11 @@ namespace Enigmaware.Entities {
         ///     Returns whether or not this object is alive.
         /// </summary>
         public bool Alive {
-			get => _health > 0;
-		}
-		public void Awake () {
+	        get {
+		        return _health > 0;
+	        }
+        }
+        public void Awake () {
 			_health = BaseHealth;
 
 			// create arrays of all the damage-related message receivers
@@ -57,6 +59,11 @@ namespace Enigmaware.Entities {
 		}
 
 		public void TakeDamage (DamageInfo damageInfo) {
+			if (damageInfo == null) {
+				Debug.LogError("You cannot attack with a null damage info!");
+				return;
+			}
+
 			for (int i = 0; i < _onIncomingDamageReceivers.Length; i++) {
 				_onIncomingDamageReceivers[i].OnIncomingDamage(ref damageInfo);
 			}

@@ -13,6 +13,6 @@ public class Billboard : MonoBehaviour
 		Vector3 direction = _mainCamera.transform.position - transform.position;
 		Quaternion targetRotation = Quaternion.LookRotation(-direction);
 		transform.localRotation = targetRotation;
-		Debug.Log(targetRotation);
+//		Debug.Log(targetRotation);
 	}
 }

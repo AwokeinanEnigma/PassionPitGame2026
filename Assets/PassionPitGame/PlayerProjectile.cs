@@ -26,6 +26,12 @@ namespace PassionPitGame {
 				MaximumHits = 25,
 				UseAccuracy = false,
 				Visualize = true,
+				DamageInfo = new DamageInfo {
+					Attacker = owner,
+					Damage = 4,
+					Force = new Vector3(0,10,0),
+					Inflictor = gameObject,
+				},
 				
 			}.Fire();
 			results.ForEach(result => {

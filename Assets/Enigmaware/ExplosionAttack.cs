@@ -23,6 +23,7 @@ public class ExplosionAttack {
 	/// If this is true, the explosion will hit everyone, regardless of team.
 	/// </summary>
 	public bool HitEveryone = false;
+	public DamageInfo DamageInfo;
 	public LayerMask LayerMask;
 
 	/// <summary>
@@ -101,11 +102,17 @@ public class ExplosionAttack {
 					Hurtbox = hurtbox,
 					HealthComponent = healthComponent,
 					Team = healthComponent.Team,
+					
 
 				};
 				_results.Add(result);
 			}
 		}
+		
+		foreach (var result in _results) {
+			result.HealthComponent.TakeDamage(DamageInfo);
+		}
+		
 		if (Visualize) {
 			GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 			obj.transform.position = Position;

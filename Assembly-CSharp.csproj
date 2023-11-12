@@ -53,6 +53,7 @@
      <Compile Include="Assets\Enigmaware\Entity\TeamComponent.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\Projectile.cs" />
      <Compile Include="Assets\Enigmaware\Entity\DamageInfo.cs" />
+     <Compile Include="Assets\PassionPitGame\GaylordAnimator.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\ICharacterController.cs" />
      <Compile Include="Assets\PassionPitGame\DummyAI.cs" />
      <Compile Include="Assets\Enigmaware\Entity\DamageReport.cs" />
@@ -74,6 +75,7 @@
      <Compile Include="Assets\Enigmaware\ExplosionAttack.cs" />
      <Compile Include="Assets\Enigmaware\FrameratePanel.cs" />
      <Compile Include="Assets\Enigmaware\Gravity\GravityBoxRedux.cs" />
+     <Compile Include="Assets\PassionPitGame\ForwardDash.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\KinematicCharacterMotor.cs" />
      <Compile Include="Assets\PassionPitGame\LoS.cs" />
      <Compile Include="Assets\Enigmaware\KinematicCharacterController\Core\ReadOnlyAttribute.cs" />
@@ -86,6 +88,7 @@
      <Compile Include="Assets\Enigmaware\World\WorldBounder.cs" />
      <Compile Include="Assets\Enigmaware\Entity\HealthComponent.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileTargetHolder.cs" />
+     <Compile Include="Assets\Enigmaware\Billboard.cs" />
      <Compile Include="Assets\PassionPitGame\PlayerInput.cs" />
      <Compile Include="Assets\PassionPitGame\Motor.cs" />
      <Compile Include="Assets\Enigmaware\Projectiles\ProjectileController.cs" />
@@ -116,9 +119,7 @@
      <Compile Include="Assets\Enigmaware\Gravity\GravitySource.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hitbox.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnTakeDamage.cs" />
-     <Compile Include="Assets\PassionPitGame\ForwardDash.cs" />
-     <Compile Include="Assets\Enigmaware\Billboard.cs" />
-     <Compile Include="Assets\PassionPitGame\GaylordAnimator.cs" />
+     <Compile Include="Assets\PassionPitGame\DestroyOnDeath.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Settings" />

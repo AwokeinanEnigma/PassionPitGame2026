@@ -68,7 +68,7 @@ namespace EntityStates.AI
             if (!mover.reachedDestination) {
                 rotator.Direction = Flatten(mover.WishDirection);
             }
-            Debug.Log(mover.reachedDestination);
+            //Debug.Log(mover.reachedDestination);
 
             // if (mover.reachedDestination && state != HidekiRunnerState.Shoot && state != HidekiRunnerState.Melee)
             {
@@ -124,16 +124,16 @@ namespace EntityStates.AI
 
             MeleeAttack attack = new MeleeAttack()
             {
-                handler = Array.Find(base.transform.GetComponentsInChildren<HitboxGroupHandler>(),
+                HitboxGroupHandler = Array.Find(base.transform.GetComponentsInChildren<HitboxGroupHandler>(),
                     element => element.name == "PickMe"),
-                team = TeamComponent.Team.Enemy,
+                Team = TeamComponent.Team.Enemy,
             };
             List<MeleeAttack.AttackResult> reesults = attack.Hit();
             foreach (MeleeAttack.AttackResult result in reesults)
             {
-                CharacterMotor motor = result.healthComponent.GetComponent<CharacterMotor>();
-                result.healthComponent.GetComponent<CharacterMotor>().KMotor.ForceUnground();
-                Vector3 vector3 = result.pushDirection * 15;
+                CharacterMotor motor = result.HealthComponent.GetComponent<CharacterMotor>();
+                result.HealthComponent.GetComponent<CharacterMotor>().KMotor.ForceUnground();
+                Vector3 vector3 = result.PushDirection * 15;
                 vector3.y += 50;
             }
             

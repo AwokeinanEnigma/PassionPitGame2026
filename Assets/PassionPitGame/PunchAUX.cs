@@ -7,15 +7,21 @@ namespace PassionPitGame {
 		public override void OnEnter () {
 			base.OnEnter();
 			meleeAttack = new MeleeAttack() {
-				 handler = base.stateMachine.GetComponentInChildren<HitboxGroupHandler>(),
-				team = TeamComponent.Team.Player
+				 HitboxGroupHandler = base.stateMachine.GetComponentInChildren<HitboxGroupHandler>(),
+				Team = TeamComponent.Team.Player,
+				DamageInfo = new() {
+					Damage = 12,
+					Attacker = gameObject,
+					Inflictor = gameObject,
+					Force = new Vector3(0,10,0)
+				}
 			};
 			
 		}
 		public override void OnClick () {
 			List<MeleeAttack.AttackResult> result = meleeAttack.Hit();
 			foreach (MeleeAttack.AttackResult attackResult in result) {
-				Motor motor = attackResult.healthComponent.GetComponent<Motor>();
+				Motor motor = attackResult.HealthComponent.GetComponent<Motor>();
 				motor.KMotor.ForceUnground();
 				motor.SetVelocity( Flatten(GetComponentInChildren<Camera>().transform.forward )* 25 + Vector3.up * 12.5f);
 				
