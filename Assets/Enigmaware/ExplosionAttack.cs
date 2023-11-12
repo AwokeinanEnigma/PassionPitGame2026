@@ -1,6 +1,7 @@
 #region
 
 using Enigmaware.Entities;
+using Enigmaware.World;
 using PassionPitGame;
 using System.Collections.Generic;
 using System.Numerics;
@@ -69,6 +70,8 @@ public class ExplosionAttack {
 				continue;
 			}
 
+			WorldBounder.DebugBounds(collider.bounds, Color.green, 10);
+			
 			if (UseAccuracy) {
 				Debug.DrawRay(Position, collider.transform.position - Position, Color.yellow, 104);
 				if (Physics.RaycastNonAlloc(new Ray(Position, collider.transform.position - Position), _hits, Vector3.Distance(Position, collider.transform.position), LayerMask.GetMask("Environment")) == 0) {

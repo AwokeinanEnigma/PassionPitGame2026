@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Enigmaware.Entities;
+using Enigmaware.World;
 using UnityEngine;
 
 
@@ -101,7 +102,8 @@ public class MeleeAttack
                 {
                     ignoredHealthComponentList.Add(hitbox.healthComponent);
                     Vector3 position = hitbox.transform.position;
-                    
+                    WorldBounder.DebugBounds(results[j].bounds, Color.green, 10);
+
                     // 
                     attackResults.Add(new AttackResult
                     {

@@ -116,6 +116,9 @@
      <Compile Include="Assets\Enigmaware\Gravity\GravitySource.cs" />
      <Compile Include="Assets\Enigmaware\Entity\Hitbox.cs" />
      <Compile Include="Assets\Enigmaware\Entity\IOnTakeDamage.cs" />
+     <Compile Include="Assets\PassionPitGame\ForwardDash.cs" />
+     <Compile Include="Assets\Enigmaware\Billboard.cs" />
+     <Compile Include="Assets\PassionPitGame\GaylordAnimator.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\Settings" />
@@ -146,6 +149,7 @@
      <Folder Include="Assets\Enigmaware\Motors" />
      <Folder Include="Assets\TextMesh Pro" />
      <None Include="Assets\tripolygon\UModeler\Materials\Basic\UModeler_UnlitVertexColorShader.shader" />
+     <Folder Include="Assets\Resources\gaylord" />
      <Folder Include="Assets\Resources" />
      <Folder Include="Assets\terrain data" />
      <Folder Include="Assets\Enigmaware\KinematicCharacterController\ExampleCharacter\Scripts" />
